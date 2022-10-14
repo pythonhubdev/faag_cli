@@ -1,27 +1,16 @@
-from flask import Flask
-from flask_cors import CORS
+from flask import Blueprint
 from flask_pydantic import validate
 
-from app.config import Constants
+from app.utils import logger
 from app.schemas import CommonResponseSchema, JSONResponse
-from app.utils.logger import logger
+
+sample_route = Blueprint("sample_route", __name__)
 
 
-def create_flask_app() -> Flask:
-    base_app = Flask(__name__)
-    CORS(base_app)
-    return base_app
-
-
-
-{{app_name}}: Flask = create_flask_app()
-
-
-
-@{{app_name}}.route(f"{Constants.BASE_SLUG}/public/ping", methods=["GET"])
+@sample_route.route("/sample_blueprint", methods=['GET'])
 @validate()
-def ping():
-    function_name = "Ping - Health Check"
+def sample_blueprint():
+    function_name = "Blueprint - Health Check"
     logger.info(
         message=f"Enter - {function_name}",
         function_name=function_name,

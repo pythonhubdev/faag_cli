@@ -2,6 +2,7 @@ FOLDERS_FILES = {
     "config": [
         "__init__",
         "constants",
+        "app_config",
     ],
     "connection": [
         "__init__",
@@ -24,5 +25,9 @@ FOLDERS_FILES = {
     "database": [
         "__init__",
         "sample_database",
+    ],
+    "schemas": [
+        "__init__",
+        "response/common_response_schema",
     ],
 }

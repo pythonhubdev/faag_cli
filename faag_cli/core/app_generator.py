@@ -21,9 +21,12 @@ class AppGenerator:
             fast_api_init.write(app_template_rendered)
 
     @staticmethod
-    def __add_folders_files():
+    def __add_folders_files(app_type):
         for folder, files in FOLDERS_FILES.items():
             os.mkdir(f"app/{folder}")
+            if folder == "schemas":
+                os.mkdir(f"app/{folder}/response")
+                os.mkdir(f"app/{folder}/request")
             for file in files:
                 with open(f"app/{folder}/{file}.py", "w", encoding="UTF-8") as gen_file:
                     if file.startswith("__"):
@@ -31,8 +34,12 @@ class AppGenerator:
                             f"{folder + file}.jinja"
                         )
                     else:
+                        if file.startswith("response"):
+                            file = file.removeprefix("response/")
+                        if file.startswith("request"):
+                            file = file.removeprefix("request/")
                         template = templates_environment.get_template(f"{file}.jinja")
-                    rendered_template = template.render()
+                    rendered_template = template.render(app_type=app_type)
                     gen_file.write(rendered_template)
 
     @classmethod
@@ -45,7 +52,7 @@ class AppGenerator:
             cls.__generate_app(app_type, app_name)
             progress.update(app_generation, advance=30)
             sleep(0.5)
-            cls.__add_folders_files()
+            cls.__add_folders_files(app_type)
             progress.update(app_generation, advance=40)
             sleep(0.5)
             FaagUtils.add_gitignore()

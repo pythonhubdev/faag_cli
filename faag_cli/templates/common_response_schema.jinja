@@ -3,3 +3,9 @@ import pydantic
 class CommonResponseSchema(pydantic.BaseModel):
     message: str
     status: str
+
+{% if app_type == "flask"%}
+class JSONResponse(pydantic.BaseModel):
+    content: Any
+    status_code: int
+{% endif %}
